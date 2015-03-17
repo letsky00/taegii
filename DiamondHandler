@@ -1,0 +1,47 @@
+using UnityEngine;
+using System.Collections;
+
+public class DiamondHandler : MonoBehaviour {
+
+	private int count = 99;
+	private float space = 4;
+	private float outer = 80;
+	private float inner = 90;
+
+	private GameObject[,] dot;
+	private float translate;
+	
+	void Start () {
+		
+		translate = count / (space * 2f);
+		
+		dot = new GameObject[count, count];
+		for (int i = 0; i < count; i++) {
+			for (int j = 0; j < count; j++) {
+				dot[i, j] = Instantiate(Resources.Load("GenerativeDotsDiamond/Prefabs/Dot") as GameObject);
+				dot[i, j].name = "dot" + i + j;
+				dot[i, j].transform.SetParent(GameObject.Find("Diamond").transform);
+				dot[i, j].transform.localPosition = new Vector3(i/space-translate, j/space-translate, 0);
+			}
+		}
+
+		AudioClip
+	}
+	
+	void Update () {
+		outer = Input.mousePosition.x / 13f;
+		inner = outer + 10;
+
+		for (int i = 0; i < count; i++) {
+			for (int j = 0; j < count; j++) {
+				if (i + j < outer - 1 || i + j > count + (count - outer) - 1 || j - i > count - outer || i - j > count - outer) {
+					dot[i, j].transform.localScale = new Vector3 (0.05f, 0.05f, 0.05f);
+				}else if (i + j < inner - 1 || i + j > count + (count - inner) - 1 || j - i > count - inner || i - j > count - inner)  {
+					dot[i, j].transform.localScale = new Vector3 (0.2f, 0.2f, 0.2f);
+				}else {
+					dot[i, j].transform.localScale = new Vector3 (0.05f, 0.05f, 0.05f);
+				}
+			}
+		}
+	}
+}
